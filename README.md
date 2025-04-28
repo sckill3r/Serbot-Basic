@@ -12,7 +12,7 @@ This repository contains the code and configuration for Serbot, an autonomous mo
 ## Directory Structure
 
 ```
-Serbot_Project/
+Serbot Basic/
 ├── For_Arduino/         # Arduino code for motor drivers and encoders
 ├── For_Raspberrypi/    # ROS2 nodes for serial, LIDAR, URDF (serbot_description), and robot control
 ├── For_Vm/             # ROS2 navigation, SLAM, and visualization packages
@@ -93,24 +93,47 @@ source install/setup.bash
 - Upload `For_Arduino/motor_encoders_vel/motor_encoders_vel.ino` to Arduino using Arduino IDE.
 
 ### 2. Launch Robot Software (on Raspberry Pi)
-- Start serial and controller nodes to bridge Arduino and ROS2.
-- Launch LIDAR driver (default: YDLIDAR, see below for other LIDARs).
-- Launch `serbot_description` to publish the URDF robot model.
+- Start serial node (bridges /cmd_vel to Arduino, publishes /speed):
+  ```bash
+  ros2 run serial_control serial_node
+  ```
+- Start controller node (publishes /odom from Arduino feedback):
+  ```bash
+  ros2 run serbot_controller serbot_controller
+  ```
+- Launch LIDAR driver (default: YDLIDAR):
+  ```bash
+  ros2 launch ydlidar_ros2_driver ydlidar_launch.py
+  ```
+  (If using another LIDAR, replace driver and launch file as needed.)
+- Launch `serbot_description` to publish the URDF robot model:
+  ```bash
+  ros2 launch serbot_description display.launch.py
+  ```
 
 ### 3. Run SLAM or Navigation (on Ubuntu VM)
 - Launch SLAM:
-```bash
-ros2 launch serbot_slam serbot_slam.launch.py
-```
-- Drive the robot to create a map. Save the map when done.
+  ```bash
+  ros2 launch serbot_slam serbot_slam.launch.py
+  ```
+- Drive the robot to create a map.
+- Save the map (option 1, using launch file):
+  ```bash
+  ros2 launch serbot_slam save_map.launch.py
+  ```
+- Or save the map (option 2, using CLI):
+  ```bash
+  ros2 run nav2_map_server map_saver_cli -f ~/ros2_ws/src/maps/serbot_map
+  ```
 - Launch Navigation:
-```bash
-ros2 launch serbot_navigation serbot_navigation.launch.py
-```
+  ```bash
+  ros2 launch serbot_navigation serbot_navigation.launch.py
+  ```
+- (Optional) Launch static transform publisher:
+  ```bash
+  ros2 launch serbot_navigation static_transforms.launch.py
+  ```
 - Use RViz to set initial pose and navigation goals.
-
-### Using a Different LIDAR
-If you have a different LIDAR, replace the `ydlidar_ros2_driver` node with your LIDAR's ROS2 driver. Make sure the driver publishes to the `/scan` topic, or remap the topic as needed. Update your launch files accordingly. Most ROS2 LIDAR drivers (e.g., RPLIDAR, Hokuyo, Slamtec) can be used with minimal changes.
 
 ## Configuration Files
 
