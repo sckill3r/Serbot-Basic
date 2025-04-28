@@ -1,0 +1,53 @@
+<robot name="serbot">
+
+    <!-- Base Link -->
+    <link name="base_link">
+        <visual>
+            <geometry>
+                <box size="0.5 0.35 0.15"/>
+            </geometry>
+            <material name="blue">
+                <color rgba="0 0 1 1"/>
+            </material>
+        </visual>
+        <inertial>
+            <mass value="5.0"/>
+            <origin xyz="0 0 0"/>
+            <inertia ixx="0.02" ixy="0.0" ixz="0.0" iyy="0.02" iyz="0.0" izz="0.02"/>
+        </inertial>
+        <collision>
+            <geometry>
+                <box size="0.5 0.35 0.15"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <!-- LIDAR Sensor -->
+    <link name="laser_frame">
+        <visual>
+            <geometry>
+                <cylinder radius="0.05" length="0.1"/>
+            </geometry>
+            <material name="black">
+                <color rgba="0 0 0 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="0.05" length="0.1"/>
+            </geometry>
+        </collision>
+        <!-- LIDAR sensor is placed 22cm above the base_link -->
+        <origin xyz="0 0 0.22" rpy="0 0 0"/>
+    </link>
+
+    <!-- LIDAR Joint -->
+    <joint name="lidar_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="laser_frame"/>
+        <!-- LIDAR sensor is fixed 22cm above base_link -->
+        <origin xyz="0 0 0.22" rpy="0 0 0"/>
+    </joint>
+
+</robot>
+

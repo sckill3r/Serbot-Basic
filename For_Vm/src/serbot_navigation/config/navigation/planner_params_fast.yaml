@@ -1,0 +1,16 @@
+planner_server:
+  ros__parameters:
+    expected_planner_frequency: 20.0  # Increased from 10.0 for more frequent planning
+    use_sim_time: False
+    planner_plugins: ["GridBased"]
+    GridBased:
+      plugin: "nav2_navfn_planner/NavfnPlanner"
+      tolerance: 0.3  # Reduced from 0.5 for more precise path planning
+      use_astar: true  # Changed to true for more optimal paths
+      allow_unknown: true
+      # Additional parameters for better performance
+      use_final_approach_orientation: true
+      cost_factor: 0.55  # Lower value for faster planning
+      neutral_cost: 50  # Lower value for more direct paths
+      lethal_cost: 253  # Slightly lower to allow closer approach to obstacles
+      publish_potential: true  # Enable visualization of potential field
