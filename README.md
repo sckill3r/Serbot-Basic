@@ -139,6 +139,12 @@ source install/setup.bash
 
 - SLAM: `For_Vm/src/serbot_slam/config/slam_params.yaml`
 - Navigation: `For_Vm/src/serbot_navigation/config/controller_params_fast.yaml`, `advanced_amcl_params.yaml`
+## Algorithms used 
+
+- Global Planner: Smac Planner (Hybrid-A*)
+- Local Planner: Regulated Pure Pursuit Controller
+- Costmaps: Obstacle Layer + Inflation Layer, tuned for the robot/space 
+- Behavior: customized Nav2 BTs for social navigation
 
 ## Troubleshooting
 
