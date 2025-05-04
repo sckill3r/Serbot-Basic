@@ -16,7 +16,7 @@
 #define WHEEL_RADIUS 0.03   // 3 cm (meters)
 #define WHEEL_BASE 0.20     // 20 cm between wheels
 #define MAX_SPEED 1.23      // Max linear speed (m/s)
-
+#define LOOPTIME 50 // 20Hz
 // Encoder Variables
 volatile int left_ticks = 0, right_ticks = 0;
 unsigned long prev_time = 0;
@@ -24,7 +24,7 @@ unsigned long prev_time = 0;
 // Interrupt Service Routines (ISRs) for Encoders
 void leftEncoderISR() { left_ticks++; }
 void rightEncoderISR() { right_ticks++; }
-
+float Wz,Vx;
 // Function to Convert Velocity to PWM
 int velocityToPWM(float velocity) {
     return (int)constrain(round((velocity / MAX_SPEED) * 255), -255, 255);
@@ -60,11 +60,13 @@ void computeWheelSpeed() {
     if (dt > 0) {
         float left_wheel_speed = (left_ticks / 240.0) * (2 * PI * WHEEL_RADIUS) / dt;
         float right_wheel_speed = (right_ticks / 240.0) * (2 * PI * WHEEL_RADIUS) / dt;
+          Serial.print("speed ");
+          Serial.print(left_wheel_speed);
+          Serial.print(" ");
+          Serial.print(right_wheel_speed );
+          Serial.print(" ");
+          Serial.println(LOOPTIME / 1000.0);
 
-        Serial.print("Left Speed: ");
-        Serial.print(left_wheel_speed, 2);
-        Serial.print(" m/s | Right Speed: ");
-        Serial.println(right_wheel_speed, 2);
     }
 
     left_ticks = 0;
@@ -98,17 +100,18 @@ void setup() {
 
 void loop() {
     if (Serial.available()) {
-        float Vx = Serial.parseFloat();
-        float Wz = Serial.parseFloat();
 
-        if (Vx == 0 && Wz == 0) {
-            Serial.println("Invalid command. Use: Vx Wz (e.g., 0.2 0.5)");
-            return;
-        }
+      String command = Serial.readStringUntil('\n'); // Read the full line
+      int spaceIndex = command.indexOf(' ');
+      if (spaceIndex != -1) {
+      String linear_str = command.substring(0, spaceIndex);
+      String angular_str = command.substring(spaceIndex + 1);
+
+       Vx = linear_str.toFloat();
+       Wz = angular_str.toFloat();}
 
         processVelocity(Vx, Wz);
-        Serial.print("Moving: Vx="); Serial.print(Vx);
-        Serial.print(" Wz="); Serial.println(Wz);
+
     }
 
     computeWheelSpeed();
