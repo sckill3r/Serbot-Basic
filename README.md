@@ -106,6 +106,14 @@ source install/setup.bash
   ros2 launch ydlidar_ros2_driver ydlidar_launch.py
   ```
   (If using another LIDAR, replace driver and launch file as needed.)
+⚠️ Important Note:
+If you're using a different LIDAR, make sure its frame_id is set to:
+```bash
+frame_id: laser_frame
+```
+This is required for proper integration with the Serbot mapping and navigation stack.
+You can usually configure this in the LIDAR's launch or parameter YAML files.
+
 - Launch `serbot_description` to publish the URDF robot model:
   ```bash
   ros2 launch serbot_description display.launch.py
