@@ -145,7 +145,7 @@ You can usually configure this in the LIDAR's launch or parameter YAML files.
 
 ## Configuration Files
 
-- SLAM: `For_Vm/src/serbot_slam/config/slam_params.yaml`
+- SLAM: `For_Vm/src/serbot_slam/config/mapper_params_online_async.yaml`
 - Navigation: `For_Vm/src/serbot_navigation/config/controller_params_fast.yaml`, `advanced_amcl_params.yaml`
 ## Algorithms used 
 

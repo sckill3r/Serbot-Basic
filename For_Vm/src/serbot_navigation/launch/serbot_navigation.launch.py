@@ -18,7 +18,7 @@ def generate_launch_description():
     serbot_navigation_dir = get_package_share_directory('serbot_navigation')
     
     # Set map directory with absolute path
-    map_dir = '~/ros2_ws/src/maps'
+    map_dir = '/home/ros2/ros2_ws/src/maps'
     map_yaml_path = os.path.join(map_dir, 'serbot_map.yaml')
     
     # Get the parameter files
