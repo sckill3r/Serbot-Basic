@@ -159,6 +159,7 @@ You can usually configure this in the LIDAR's launch or parameter YAML files.
 - **Serial Issues**: Check USB connections and device names.
 - **Transform Errors**: Ensure static transforms are running.
 - **Navigation/SLAM Issues**: Verify sensor data in RViz, adjust parameters as needed.
+- **Failed to calculate odom**: change base_frame in `/opt/ros/jazzy/share/slam_toolbox/config/mapper_params_online_async.yaml` from `base_footprint` to `base_link`
 
 ## Tested Platforms
 
