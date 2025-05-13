@@ -27,7 +27,7 @@ def generate_launch_description():
         package='rviz2',
         executable='rviz2',
         name='rviz2',
-        arguments=['-d', '/home/ros2/ros2_ws/src/viz.rviz'],
+        arguments=['-d', '~/ros2_ws/src/viz.rviz'],
         output='screen'
     )
     
