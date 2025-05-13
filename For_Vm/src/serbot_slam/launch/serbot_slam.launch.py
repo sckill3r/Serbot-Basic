@@ -27,13 +27,17 @@ def generate_launch_description():
     )
     
     # RViz with your existing configuration
+    # Set RViz config path in a user-independent way
+    ws_dir = os.path.expanduser(os.path.join('~', 'ros2_ws'))
+    rviz_config_path = os.path.join(ws_dir, 'src', 'viz.rviz')
     rviz_node = Node(
         package='rviz2',
         executable='rviz2',
         name='rviz2',
-        arguments=['-d', '/home/ros2/ros2_ws/src/viz.rviz'],
+        arguments=['-d', rviz_config_path],
         output='screen'
     )
+    
     
     # Create and return launch description
     return LaunchDescription([
